@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Image Gallery Slider</title>
+  <style>
+
+    .thumbnail {
+      border-radius: 50%;
+      overflow: hidden;
+      width: 50px; 
+      height: 50px; 
+      margin: 5px;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-content {
+      position: relative;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slideshow-container {
+      position: relative;
+      max-width: 800px;
+      width: 100%;
+      margin-top: 50px;
+    }
+
+    .mySlides {
+      display: none;
+    }
+
+    .mySlides img {
+      width: 100%;
+      height: auto;
+    }
+
+    .prev,
+    .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 25px;
+      user-select: none;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .close {
+      color: white;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .image-counter {
+      color: white;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gallery">
+    <div class="thumbnails">
+
+      <div class="thumbnail" onclick="openModal('modal1')">
+        <img src="image1.png" alt="Image 1">
+      </div>
+
+      <div class="thumbnail" onclick="openModal('modal2')">
+        <img src="image2.png" alt="Image 2">
+      </div>
+
+      <div class="thumbnail" onclick="openModal('modal3')">
+        <img src="image3.png" alt="Image 3">
+      </div>
+
+    </div>
+  </div>
+
+
+  <div id="modal1" class="modal">
+    <span class="close" onclick="closeModal('modal1')">&times;</span>
+    <div class="modal-content">
+      <div class="slideshow-container">
+        <div class="mySlides fade">
+          <img src="image1.png" alt="Image 1">
+        </div>
+        <div class="mySlides fade">
+          <img src="image2.png" alt="Image 2">
+        </div>
+        <div class="mySlides fade">
+          <img src="image3.png" alt="Image 3">
+        </div>
+      </div>
+      <div class="image-counter" id="imageCounter1"></div>
+      <a class="prev" onclick="plusSlidesModal('modal1', -1)">&#10094;</a>
+      <a class="next" onclick="plusSlidesModal('modal1', 1)">&#10095;</a>
+    </div>
+  </div>
+
+  <div id="modal2" class="modal">
+    <span class="close" onclick="closeModal('modal2')">&times;</span>
+    <div class="modal-content">
+      <div class="slideshow-container">
+        <div class="mySlides fade">
+          <img src="image2.png" alt="Image 2">
+        </div>
+        <div class="mySlides fade">
+          <img src="image3.png" alt="Image 3">
+        </div>
+      </div>
+      <div class="image-counter" id="imageCounter2"></div>
+      <a class="prev" onclick="plusSlidesModal('modal2', -1)">&#10094;</a>
+      <a class="next" onclick="plusSlidesModal('modal2', 1)">&#10095;</a>
+    </div>
+  </div>
+
+  <div id="modal3" class="modal">
+    <span class="close" onclick="closeModal('modal3')">&times;</span>
+    <div class="modal-content">
+      <div class="slideshow-container">
+        <div class="mySlides fade">
+          <img src="image2.png" alt="Image 2">
+        </div>
+        <div class="mySlides fade">
+          <img src="image3.png" alt="Image 3">
+        </div>
+      </div>
+      <div class="image-counter" id="imageCounter3"></div>
+      <a class="prev" onclick="plusSlidesModal('modal3', -1)">&#10094;</a>
+      <a class="next" onclick="plusSlidesModal('modal3', 1)">&#10095;</a>
+    </div>
+  </div>
+
+  <script>
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = 'block';
+      showSlidesModal(modalId, 1);
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = 'none';
+    }
+
+    function plusSlidesModal(modalId, n) {
+      showSlidesModal(modalId, slideIndexModal[modalId] += n);
+    }
+
+    function currentSlideModal(modalId, n) {
+      showSlidesModal(modalId, slideIndexModal[modalId] = n);
+    }
+
+    const slideIndexModal = {
+      'modal1': 1,
+      'modal2': 1,
+      'modal3': 1,
+    };
+
+    function showSlidesModal(modalId, n) {
+      const modal = document.getElementById(modalId);
+      let i;
+      const slides = modal.getElementsByClassName("mySlides");
+      if (n > slides.length) {
+        slideIndexModal[modalId] = 1;
+      }
+      if (n < 1) {
+        slideIndexModal[modalId] = slides.length;
+      }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slides[slideIndexModal[modalId] - 1].style.display = "block";
+      updateImageCounter(modalId, slideIndexModal[modalId], slides.length);
+    }
+
+    function updateImageCounter(modalId, currentIndex, totalImages) {
+      const counter = document.getElementById("imageCounter" + modalId.slice(-1));
+      counter.textContent = currentIndex + "/" + totalImages;
+    }
+  </script>
+</body>
+
+</html>
